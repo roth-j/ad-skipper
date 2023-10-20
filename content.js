@@ -1,5 +1,3 @@
-console.log("content.js")
-
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
   /* If the received message has the expected format... */
   if (msg.text && (msg.text == 'hey_cs')) {
@@ -8,7 +6,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
   }
 });
 
-console.log('running custom you tube add skipper')
+console.log('%c running custom you tube add skipper', 'color: #bada55; font-size: 24px; font-weight: bold')
 
 var simulateClick = function (elem) {
   // Create our event (with options)
@@ -22,15 +20,14 @@ var simulateClick = function (elem) {
 };
 
 var execute = function (time) {
-  console.log('running')
+  console.count('execute')
   setTimeout(()=>{
-    console.log('executing')
     var skipButton = document.querySelector('.ytp-ad-skip-button.ytp-button');
       if(skipButton){
-        console.log('%c skipping add 🖕', 'color: #bada55; font-size: 42px; font-weight: bold')
+        console.log('%c skipping add 🖕', 'color: #bada55; font-size: 24px; font-weight: bold')
         simulateClick(skipButton);
       } else {
-        console.log('nothing found')
+        console.count('no button press')
       }
     }, time)
 }
@@ -39,6 +36,5 @@ chrome.runtime.sendMessage({from:"content"}); //first, tell the background page 
 chrome.runtime.onMessage.addListener(function(msg) {
   if (msg.from == "background") {
     execute(500)
-    execute(5500)
   }
 });

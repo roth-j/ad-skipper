@@ -1,0 +1,14 @@
+body{
+  border-radius: 25%;
+}
+
+img {
+  border-radius: 50%;
+  border: 1px solid #F44336;
+  transition-duration: 0.4s;
+}
+
+img:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  background-color: #F44336;
+}

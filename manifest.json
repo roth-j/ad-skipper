@@ -18,6 +18,6 @@
   },
   "permissions": [
     "webRequest",
-    "<all_urls>"
+    "*://*.youtube.com/*"
   ]
 }

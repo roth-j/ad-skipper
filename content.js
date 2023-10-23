@@ -1,40 +1,63 @@
-chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-  /* If the received message has the expected format... */
-  if (msg.text && (msg.text == 'hey_cs')) {
-      console.log('Received a msg from bp...')
-      sendResponse('hey_bp');
-  }
-});
-
-console.log('%c running custom you tube add skipper', 'color: #bada55; font-size: 24px; font-weight: bold')
+const LOCAL_KEY="youtube-adskipper-count";
 
 var simulateClick = function (elem) {
-  // Create our event (with options)
-  var evt = new MouseEvent('click', {
+  const evt = new MouseEvent('click', {
     bubbles: true,
     cancelable: true,
     view: window
   });
-  // If cancelled, don't dispatch our event
   !elem.dispatchEvent(evt);
 };
+console.log('%c Running ad skipper', 'color: #bada55; font-size: 24px; font-weight: bold')
 
 var execute = function (time) {
-  console.count('execute')
   setTimeout(()=>{
     var skipButton = document.querySelector('.ytp-ad-skip-button.ytp-button');
-      if(skipButton){
-        console.log('%c skipping add 🖕', 'color: #bada55; font-size: 24px; font-weight: bold')
+      if(skipButton){  
         simulateClick(skipButton);
-      } else {
-        console.count('no button press')
+        chrome.storage.local.get([LOCAL_KEY], (result) => {
+          const val = ((result[LOCAL_KEY] || {}).count || 0) + 1
+          chrome.storage.local.set({[LOCAL_KEY]: {count: val}}, () => {
+            console.log('%c skipping ad 🖕', 'color: #bada55; font-size: 24px; font-weight: bold')
+            console.log(`%c ${val} ads skipped`, 'color: #bada55; font-size: 24px; font-weight: bold');
+          });
+        });
       }
     }, time)
 }
-chrome.runtime.sendMessage({from:"content"}); //first, tell the background page that this is the tab that wants to receive the messages.
 
-chrome.runtime.onMessage.addListener(function(msg) {
-  if (msg.from == "background") {
-    execute(500)
+let vidPlayer;
+const id = setInterval(()=>{
+  vidPlayer =document.getElementById('movie_player')
+  if(vidPlayer){
+    clearInterval(id)
+    setup()
   }
-});
+}, 100)
+
+setTimeout(()=>{
+  clearInterval(id)
+}, 10 * 1000)
+
+const setup = () =>{
+  const vidPlayer =document.getElementById('movie_player')
+  function tryToClick() {
+    execute(200)
+  }
+
+  const mutationCallback = mutationsList => {
+    for(let mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          if(mutation.target.classList.contains('ad-showing')){
+            tryToClick()
+          } else {
+            console.info(mutation.target.classList)
+          }
+        }
+    }
+  }
+
+  const observer = new MutationObserver(mutationCallback)
+  observer.observe(vidPlayer, { attributes: true })
+
+}

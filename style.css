@@ -2,3 +2,18 @@ body{
   border-radius: 25%;
   width: 200px;
 }
+
+.utube{
+  background: #FF0000;
+  color: white;
+  border-radius: 20%;
+  text-align: center;
+  width: 85px;
+  height: 35px;
+  font-size: 24px;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+}

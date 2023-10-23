@@ -50,8 +50,6 @@ const setup = () =>{
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
           if(mutation.target.classList.contains('ad-showing')){
             tryToClick()
-          } else {
-            console.info(mutation.target.classList)
           }
         }
     }

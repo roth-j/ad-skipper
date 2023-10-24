@@ -8,9 +8,6 @@
       "js": ["content.js"]
     }
   ],
-  "background":{
-    "scripts": []
-  },
   "browser_action": {
     "default_popup": "popup.html",
     "default_title": "you tube ad skipper",
